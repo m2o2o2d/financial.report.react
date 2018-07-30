@@ -4,6 +4,7 @@ import FastClick from 'fastclick';
 import { AppContainer } from 'react-hot-loader';
 import { Provider } from 'react-redux';
 import { HashRouter, Switch, Route, Redirect } from 'react-router-dom';
+import { Form } from 'antd';
 import registerServiceWorker from './registerServiceWorker';
 import store from '@/store/store';
 import asyncComponent from '@/utils/asyncComponent';
@@ -22,7 +23,7 @@ const render = Component => {
 				<HashRouter>
 					<Switch>
 						<Route path="/" exact component={home} />
-						<Route path="/login" component={login} />
+						<Route path="/login" component={Form.create()(login)} />
 						<Route path="/register" component={register} />
 						<Redirect to="/" />
 					</Switch>
