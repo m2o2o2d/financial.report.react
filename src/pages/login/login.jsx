@@ -7,25 +7,36 @@ const FormItem = Form.Item;
 
 class Login extends Component {
 
+	handleSubmit = (e) => {
+		e.preventDefault();
+		this.props.form.validateFields((err, values) => {
+			if(!err) {
+				console.log("values:", values);
+			}
+		});
+	};
+
 	render() {
 		const { getFieldDecorator } = this.props.form;
 		return (
 			<div id="login">
-				<img alt="GrapeCity" src={logo} />
-    			<span>财务报表系统</span>
+				<div className="logo">
+					<img alt="GrapeCity" src={logo} />
+    				<span>财务报表系统</span>
+    			</div>
 				<Form onSubmit={this.handleSubmit} className="login-form">
 					<FormItem>
 						{getFieldDecorator('userName', {
 			            	rules: [{ required: true, message: '请输入用户名' }],
 			          	})(
-			            	<Input prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="用户名" />
+			            	<Input prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="用户名" size="large" />
 			          	)}
 					</FormItem>
 					<FormItem>
 						{getFieldDecorator('password', {
 			            	rules: [{ required: true, message: '请输入密码' }],
 			          	})(
-			            	<Input prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />} type="password" placeholder="密码" />
+			            	<Input prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />} type="password" placeholder="密码" size="large" />
 			          	)}
 					</FormItem>
 					<FormItem>
@@ -35,14 +46,14 @@ class Login extends Component {
 						})(
 							<Checkbox>记住我</Checkbox>
 						)}
+						<a className="login-form-forgot" href="">忘记密码？</a>
+						<Button type="primary" htmlType="submit" className="login-form-button" href="/app">登录</Button>
+						没有用户？<a href="">注册！</a>
 					</FormItem>
-					<a className="login-form-forgot" href="">忘记密码？</a>
-					<Button type="primary" htmlType="submit" className="login-form-button">登录</Button>
-					没有用户？<a href="">注册！</a>
 				</Form>
 			</div>
 		);
 	};
 }
 
-export default Login;
+export default Form.create()(Login);

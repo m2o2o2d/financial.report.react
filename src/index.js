@@ -8,10 +8,11 @@ import { Form } from 'antd';
 import registerServiceWorker from './registerServiceWorker';
 import store from '@/store/store';
 import asyncComponent from '@/utils/asyncComponent';
+import './style/base.css';
 
 FastClick.attach(document.body);
 
-const home = asyncComponent(() => import("@/pages/home/home"));
+const app = asyncComponent(() => import("@/pages/app/app"));
 const login = asyncComponent(() => import("@/pages/login/login"));
 const register = asyncComponent(() => import("@/pages/login/register"));
 
@@ -22,8 +23,8 @@ const render = Component => {
 			<AppContainer>
 				<HashRouter>
 					<Switch>
-						<Route path="/" exact component={home} />
-						<Route path="/login" component={Form.create()(login)} />
+						<Route path="/" exact component={app} />
+						<Route path="/login" component={login} />
 						<Route path="/register" component={register} />
 						<Redirect to="/" />
 					</Switch>

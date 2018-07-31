@@ -1,24 +1,31 @@
 @import (reference) "../../style/mixin.less";
 
 #login {
-	// display: flex;
-	// justify-content: center;
-	// align-items: center;
+	height: 90%;
 	.flex();
 	flex-direction: column;
 	flex-wrap: nowrap;
-	img {
-		height: 36px;
-		margin-right: 16px;
+	.logo {
+		img {
+			height: 60px;
+			margin-right: @base-gap*2;
+		}
+		.font(@base-font-s0, @base-color-blue-bg);
+		margin-bottom: @base-gap*4;
 	}
 }
 
 .login-form {
-	max-width: 300px;
+	max-width: 600px;
+	width: 400px;
+	padding: @base-gap*4;
+	background: #fff;
+	box-shadow: 0 0 12px @base-color-gray-shadow;
+	border-radius: 4px;
 }
 
 .login-form-forgot {
-	float:right;
+	float: right;
 }
 
 .login-form-button {
