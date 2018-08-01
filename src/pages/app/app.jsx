@@ -6,13 +6,11 @@ import PublicSider from '@/components/sider/sider';
 import asyncComponent from '@/utils/asyncComponent';
 import './app.less';
 
-import home from '@/pages/home/home';
-import productionPlan from '@/pages/productionPlan/productionPlan';
-import rebate from '@/pages/rebate/rebate';
-
-// const home = asyncComponent(() => import("@/pages/home/home"));
-// const productionPlan = asyncComponent(() => import("@/pages/productionPlan/productionPlan"));
-// const rebate = asyncComponent(() => import("@/pages/rebate/rebate"));
+const home = asyncComponent(() => import("@/pages/home/home"));
+const productionPlan = asyncComponent(() => import("@/pages/productionPlan/productionPlan"));
+const rebateMonth = asyncComponent(() => import("@/pages/rebate/rebateMonth"));
+const rebateYear = asyncComponent(() => import("@/pages/rebate/rebateYear"));
+const rebateCustomer = asyncComponent(() => import("@/pages/rebate/rebateCustomer"));
 
 class App extends Component {
 
@@ -25,7 +23,9 @@ class App extends Component {
 					<Switch>
 						<Route path="/app/home" component={home} />
 						<Route path="/app/productionPlan" component={productionPlan} />
-						<Route path="/app/rebate" component={rebate} />
+						<Route path="/app/rebateMonth" component={rebateMonth} />
+						<Route path="/app/rebateYear" component={rebateYear} />
+						<Route path="/app/rebateCustomer" component={rebateCustomer} />
 					</Switch>
 				</Layout>
 			</Layout>

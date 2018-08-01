@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 
-class Rebate extends Component {
+import './rebateMonth.less';
+
+class RebateMonth extends Component {
 
 	render() {
 		return (
@@ -9,4 +11,4 @@ class Rebate extends Component {
 	};
 }
 
-export default Rebate;
+export default RebateMonth;

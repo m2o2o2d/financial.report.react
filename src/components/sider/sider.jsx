@@ -31,10 +31,13 @@ class PublicSider extends Component {
                     </Menu.Item>
                     <SubMenu key="rebate" title={<span><Icon type="folder-open" /><span>返利管理</span></span>}>
                         <Menu.Item key="rebateMonth">
-                            <Link to="/app/rebate">月度返利规则设定</Link>
+                            <Link to="/app/rebateMonth">月度返利规则设定</Link>
                         </Menu.Item>
                         <Menu.Item key="rebateYear">
-                            <Link to="/app/rebate">年度返利规则设定</Link>
+                            <Link to="/app/rebateYear">年度返利规则设定</Link>
+                        </Menu.Item>
+                        <Menu.Item key="rebateCustomer">
+                            <Link to="/app/rebateCustomer">客户返利设定</Link>
                         </Menu.Item>
                     </SubMenu>
                     <Menu.Item key="productionPlan">
