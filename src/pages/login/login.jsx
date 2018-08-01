@@ -47,8 +47,8 @@ class Login extends Component {
 							<Checkbox>记住我</Checkbox>
 						)}
 						<a className="login-form-forgot" href="">忘记密码？</a>
-						<Button type="primary" htmlType="submit" className="login-form-button" href="/app">登录</Button>
-						没有用户？<a href="">注册！</a>
+						<Button type="primary" className="login-form-button" href="/#/app/home">登录</Button>
+						没有用户？<a href="/register">注册！</a>
 					</FormItem>
 				</Form>
 			</div>

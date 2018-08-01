@@ -3,8 +3,7 @@ import ReactDOM from 'react-dom';
 import FastClick from 'fastclick';
 import { AppContainer } from 'react-hot-loader';
 import { Provider } from 'react-redux';
-import { HashRouter, Switch, Route, Redirect } from 'react-router-dom';
-import { Form } from 'antd';
+import { HashRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
 import registerServiceWorker from './registerServiceWorker';
 import store from '@/store/store';
 import asyncComponent from '@/utils/asyncComponent';
@@ -21,14 +20,14 @@ const render = Component => {
 		// Bind to redux, hot loader
 		<Provider store={store}>
 			<AppContainer>
-				<HashRouter>
+				<Router>
 					<Switch>
-						<Route path="/" exact component={app} />
+						<Route path="/app" component={app} />
 						<Route path="/login" component={login} />
 						<Route path="/register" component={register} />
-						<Redirect to="/" />
+						<Redirect to="/login" />
 					</Switch>
-				</HashRouter>
+				</Router>
 			</AppContainer>
 		</Provider>,
 		document.getElementById('root')

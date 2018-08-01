@@ -1,13 +1,18 @@
 import React, { Component } from 'react';
-import { HashRouter, Switch, Route, Redirect } from 'react-router-dom';
+import { Switch, Route } from 'react-router-dom';
 import { Layout } from 'antd';
 import PublicHeader from '@/components/header/header';
 import PublicSider from '@/components/sider/sider';
 import asyncComponent from '@/utils/asyncComponent';
 import './app.less';
 
-const home = asyncComponent(() => import("@/pages/home/home"));
-const productionPlan = asyncComponent(() => import("@/pages/productionPlan/productionPlan"));
+import home from '@/pages/home/home';
+import productionPlan from '@/pages/productionPlan/productionPlan';
+import rebate from '@/pages/rebate/rebate';
+
+// const home = asyncComponent(() => import("@/pages/home/home"));
+// const productionPlan = asyncComponent(() => import("@/pages/productionPlan/productionPlan"));
+// const rebate = asyncComponent(() => import("@/pages/rebate/rebate"));
 
 class App extends Component {
 
@@ -17,11 +22,11 @@ class App extends Component {
 				<PublicHeader />
 				<Layout>
 					<PublicSider>PublicSider</PublicSider>
-					<HashRouter>
-						<Switch>
-							<Route path="/" exact component={productionPlan} />
-						</Switch>
-					</HashRouter>
+					<Switch>
+						<Route path="/app/home" component={home} />
+						<Route path="/app/productionPlan" component={productionPlan} />
+						<Route path="/app/rebate" component={rebate} />
+					</Switch>
 				</Layout>
 			</Layout>
 		);
