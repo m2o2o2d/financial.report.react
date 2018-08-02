@@ -8,7 +8,7 @@ class RebateYear extends Component {
 		return (
 			<p>RebateYear</p>
 		);
-	};
+	}
 }
 
 export default RebateYear;

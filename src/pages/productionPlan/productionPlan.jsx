@@ -86,64 +86,64 @@ class ProductionPlan extends Component {
 		});
 	};
 
-  render() {
-  	const { visible, loading } = this.state;
-    return(
-      <Content className="mainContent">
-      	{/*----------------------------filter----------------------------*/}
-      	<Collapse defaultActiveKey="filter" bordered={true}>
-      		<Panel key="filter" header="筛选条件">
-				<Form
-		      		layout="inline"
-					onSubmit={this.handleSearch}
-		      	>
-		      		<FormItem label="起止时间：">
-		      			<RangePicker onChange={this.handleDateChange}></RangePicker>
-		      		</FormItem>
-		      		<FormItem label="货物：">
-		      			<Select
-						    showSearch
-						    style={{ width: 200 }}
-						    placeholder="选择货物"
-						    optionFilterProp="children"
-						    onChange={this.handleProductChange}
-						    onFocus={this.handleProductChange}
-						    onBlur={this.handleProductChange}
-						    filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
-						>
-						    <Option value="crab">蟹味菇</Option>
-						    <Option value="white">白玉菇</Option>
-						  </Select>
-		      		</FormItem>
-		      		<FormItem><Button type="primary" onClick={this.handleSearch}>查询</Button></FormItem>
-		      		<FormItem><Button type="default" onClick={this.handldeReset}>重置</Button></FormItem>
-		      	</Form>
-      		</Panel>
-      	</Collapse>
-      	{/*----------------------------toolbar----------------------------*/}
-      	<div className="toolbar">
-      		<Button type="default" shape="circle" icon="minus"></Button>
-      		<Button type="default" shape="circle" icon="plus" onClick={this.handleCreate}></Button>
-      	<Button type="default" shape="circle" icon="export"></Button>
-      	<Button type="default" shape="circle" icon="printer"></Button>
-      	</div>
-      	<Modal
-			title="创建预估产量"
-			visible={visible}
-			width="80%"
-			onOk={this.handleSubmit}
-			onCancel={this.handleCancel}
-			footer={[
-				<Button key="submit" type="primary" onClick={this.handleSubmit} loading={loading}>保存</Button>,
-				<Button key="cancel" onClick={this.handleCancel}>取消</Button>
-			]}
-		>
-    	</Modal>
-      	{/*----------------------------table----------------------------*/}
-      	<Table dataSource={dataSource} columns={columns} />
-      </Content>
-    );
-  }
+	render() {
+	  	const { visible, loading } = this.state;
+	    return(
+	      <Content className="mainContent">
+	      	{/*----------------------------filter----------------------------*/}
+	      	<Collapse defaultActiveKey="filter" bordered={true}>
+	      		<Panel key="filter" header="筛选条件">
+					<Form
+			      		layout="inline"
+						onSubmit={this.handleSearch}
+			      	>
+			      		<FormItem label="起止时间：">
+			      			<RangePicker onChange={this.handleDateChange}></RangePicker>
+			      		</FormItem>
+			      		<FormItem label="货物：">
+			      			<Select
+							    showSearch
+							    style={{ width: 200 }}
+							    placeholder="选择货物"
+							    optionFilterProp="children"
+							    onChange={this.handleProductChange}
+							    onFocus={this.handleProductChange}
+							    onBlur={this.handleProductChange}
+							    filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
+							>
+							    <Option value="crab">蟹味菇</Option>
+							    <Option value="white">白玉菇</Option>
+							  </Select>
+			      		</FormItem>
+			      		<FormItem><Button type="primary" onClick={this.handleSearch}>查询</Button></FormItem>
+			      		<FormItem><Button type="default" onClick={this.handldeReset}>重置</Button></FormItem>
+			      	</Form>
+	      		</Panel>
+	      	</Collapse>
+	      	{/*----------------------------toolbar----------------------------*/}
+	      	<div className="toolbar">
+	      		<Button type="default" shape="circle" icon="minus"></Button>
+	      		<Button type="default" shape="circle" icon="plus" onClick={this.handleCreate}></Button>
+	      	<Button type="default" shape="circle" icon="export"></Button>
+	      	<Button type="default" shape="circle" icon="printer"></Button>
+	      	</div>
+	      	<Modal
+				title="创建预估产量"
+				visible={visible}
+				width="80%"
+				onOk={this.handleSubmit}
+				onCancel={this.handleCancel}
+				footer={[
+					<Button key="submit" type="primary" onClick={this.handleSubmit} loading={loading}>保存</Button>,
+					<Button key="cancel" onClick={this.handleCancel}>取消</Button>
+				]}
+			>
+	    	</Modal>
+	      	{/*----------------------------table----------------------------*/}
+	      	<Table dataSource={dataSource} columns={columns} />
+	      </Content>
+	    );
+	}
 }
 
 export default ProductionPlan;

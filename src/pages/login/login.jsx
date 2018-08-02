@@ -1,4 +1,7 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { login } from '@/store/login/action';
 import { Form, Icon, Input, Button, Checkbox } from 'antd';
 import logo from '@/assets/images/logo.svg';
 import './login.less';
@@ -7,11 +10,20 @@ const FormItem = Form.Item;
 
 class Login extends Component {
 
+	static propTypes = {
+		userID: PropTypes.string,
+		password: PropTypes.string
+	};
+
 	handleSubmit = (e) => {
 		e.preventDefault();
 		this.props.form.validateFields((err, values) => {
 			if(!err) {
 				console.log("values:", values);
+				const u = this.props.form.getFieldValue("userName");
+				const p = this.props.form.getFieldValue("password");
+				this.props.login(u, p);
+				this.props.history.push("/app");
 			}
 		});
 	};
@@ -47,13 +59,22 @@ class Login extends Component {
 							<Checkbox>记住我</Checkbox>
 						)}
 						<a className="login-form-forgot" href="">忘记密码？</a>
-						<Button type="primary" className="login-form-button" href="/#/app/home">登录</Button>
+						<Button type="primary" htmlType="submit" className="login-form-button">登录</Button>
 						没有用户？<a href="/register">注册！</a>
 					</FormItem>
 				</Form>
 			</div>
 		);
-	};
+	}
 }
 
-export default Form.create()(Login);
+const mapStateToProps = (state, ownProps) => ({
+	userID: state.loginData.error || null,
+	password: state.loginData.error || null
+});
+
+const mapDispatchToProps = {
+	login
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Form.create()(Login));

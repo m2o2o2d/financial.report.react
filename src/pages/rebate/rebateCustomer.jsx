@@ -8,7 +8,7 @@ class RebateCustomer extends Component {
 		return (
 			<p>RebateCustomer</p>
 		);
-	};
+	}
 }
 
 export default RebateCustomer;

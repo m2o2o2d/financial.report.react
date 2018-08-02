@@ -21,7 +21,7 @@ class App extends Component {
 				<Layout>
 					<PublicSider>PublicSider</PublicSider>
 					<Switch>
-						<Route path="/app/home" component={home} />
+						<Route path="/app" component={home} />
 						<Route path="/app/productionPlan" component={productionPlan} />
 						<Route path="/app/rebateMonth" component={rebateMonth} />
 						<Route path="/app/rebateYear" component={rebateYear} />

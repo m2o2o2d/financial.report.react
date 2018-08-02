@@ -8,7 +8,7 @@ class RebateMonth extends Component {
 		return (
 			<p>Rebate</p>
 		);
-	};
+	}
 }
 
 export default RebateMonth;
