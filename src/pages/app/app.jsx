@@ -3,6 +3,7 @@ import { Switch, Route } from 'react-router-dom';
 import { Layout } from 'antd';
 import PublicHeader from '@/components/header/header';
 import PublicSider from '@/components/sider/sider';
+// import AuthorizedRoute from '@/components/authorizedRoute/authorizedRoute';
 import asyncComponent from '@/utils/asyncComponent';
 import './app.less';
 

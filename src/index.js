@@ -4,6 +4,7 @@ import FastClick from 'fastclick';
 import { AppContainer } from 'react-hot-loader';
 import { Provider } from 'react-redux';
 import { HashRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
+// import AuthorizedRoute from '@/components/authorizedRoute/authorizedRoute';
 import registerServiceWorker from './registerServiceWorker';
 import store from '@/store/store';
 import asyncComponent from '@/utils/asyncComponent';
