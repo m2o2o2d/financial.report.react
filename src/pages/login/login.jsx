@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { withRouter, Redirect } from 'react-router-dom';
-import { is, fromJS } from 'immutable';
+// import { is, fromJS } from 'immutable';
 import { login } from '@/store/login/action';
 import { Form, Icon, Input, Button, Checkbox } from 'antd';
 import logo from '@/assets/images/logo.svg';
@@ -13,7 +13,7 @@ const FormItem = Form.Item;
 class Login extends Component {
 
 	static propTypes = {
-		isAuthorized: PropTypes.bool.isRequired,
+		isAuthenticated: PropTypes.bool.isRequired,
 		user: PropTypes.object
 	};
 
@@ -29,11 +29,11 @@ class Login extends Component {
 	};
 
 	render() {
-		const { isAuthorized } = this.props;
+		const { isAuthenticated } = this.props;
 		const { getFieldDecorator } = this.props.form;
 		return (
 			<div id="login">
-				{ isAuthorized ? <Redirect to="/app"/> : null }
+				{ isAuthenticated ? <Redirect to="/app"/> : null }
 				<div className="logo">
 					<img alt="GrapeCity" src={logo} />
     				<span>财务报表系统</span>
@@ -72,11 +72,12 @@ class Login extends Component {
 
 const mapStateToProps = (state, ownProps) => ({
 	user: state.loginData.user || null,
-	isAuthorized: state.loginData.isAuthorized || false
+	isAuthenticated: state.loginData.isAuthenticated || false
 });
 
 const mapDispatchToProps = {
 	login
 };
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Form.create()(Login)));
+// export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Form.create()(Login)));
+export default connect(mapStateToProps, mapDispatchToProps)(Form.create()(Login));

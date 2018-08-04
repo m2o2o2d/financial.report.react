@@ -26,6 +26,12 @@ const loginFailure = (error) => {
 	};
 };
 
+export const logout = () => {
+	return {
+		type: LOGOUT
+	};
+};
+
 export const login = (userID, password) => dispatch => {
 	API.getUser({userID: userID})
 	.then(
