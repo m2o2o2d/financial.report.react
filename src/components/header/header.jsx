@@ -33,7 +33,7 @@ class PublicHeader extends Component {
         const { user } = this.props;
         const menu = (
             <Menu onClick={this.handleMenuClick}>
-                <Menu.Item key="current" disable>
+                <Menu.Item key="current">
                     当前登录：{user.UserID}
                 </Menu.Item>
                 <Menu.Divider />
@@ -55,7 +55,7 @@ class PublicHeader extends Component {
               			<Col>
                             <Dropdown 
                                 overlay={menu}
-                                trigger="click"
+                                trigger={['click']}
                                 visible={this.state.isVisible}
                                 onVisibleChange={this.handleVisibleChange}>
                                 <div id="avatar">
