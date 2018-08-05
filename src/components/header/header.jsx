@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Layout, Avatar, Row, Col, Popover, Button } from 'antd';
+import { Layout, Avatar, Row, Col, Menu, Dropdown, Button } from 'antd';
 import logo from '@/assets/images/logo.svg';
 import './header.less';
 
@@ -14,22 +14,33 @@ class PublicHeader extends Component {
     };
 
     state = {
-        isPopoverVisible: false
+        isVisible: false
     };
 
-    handlePopoverVisibleChange = (visible) => {
-        this.setState({isPopoverVisible: visible});
+    handleVisibleChange = (visible) => {
+        this.setState({isVisible: visible});
     };
 
-    handleLogout = (e) => {
-        this.setState({isPopoverVisible: false});
-        this.props.logout();
+    handleMenuClick = ({key}) => {
+        this.setState({isVisible: false});
+        switch(key) {
+            case "logout": this.props.logout(); break;
+            default:;
+        }
     };
 
     render() {
         const { user } = this.props;
-        const content = (
-            <a onClick={this.handleLogout}>退出</a>
+        const menu = (
+            <Menu onClick={this.handleMenuClick}>
+                <Menu.Item key="current" disable>
+                    当前登录：{user.UserID}
+                </Menu.Item>
+                <Menu.Divider />
+                <Menu.Item key="logout">
+                    <a onClick={this.handleLogout}>退出</a>
+                </Menu.Item>
+            </Menu>
         );
         return(
             <Header style={{background: '#000'}}>
@@ -42,17 +53,15 @@ class PublicHeader extends Component {
         					</div>
               			</Col>	
               			<Col>
-                            <Popover 
-                                placement="bottomRight" 
-                                title={'当前登录：'+user.UserID} 
-                                content={content}
-                                visible={this.state.isPopoverVisible}
+                            <Dropdown 
+                                overlay={menu}
                                 trigger="click"
-                                onVisibleChange={this.handlePopoverVisibleChange}>
+                                visible={this.state.isVisible}
+                                onVisibleChange={this.handleVisibleChange}>
                                 <div id="avatar">
                                     <Avatar icon="user" />
                                 </div>
-                            </Popover>
+                            </Dropdown>
               			</Col>
               		</Row>
               	</div>
