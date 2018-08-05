@@ -4,6 +4,7 @@ export const LOGIN_LOADING = 'LOGIN_LOADING';
 export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
 export const LOGIN_FAILURE = 'LOGIN_FAILURE';
 export const LOGOUT = 'LOGOUT';
+export const CLEAR_ERROR = 'CLEAR_ERROR';
 
 const loginLoading = (isLoading) => {
 	return {
@@ -32,6 +33,12 @@ export const logout = () => {
 	};
 };
 
+export const clearError = () => {
+	return {
+		type: CLEAR_ERROR
+	};
+};
+
 export const login = (userID, password) => dispatch => {
 	API.getUser({userID: userID})
 	.then(
@@ -41,7 +48,7 @@ export const login = (userID, password) => dispatch => {
 			} else {
 				const error = new Error(response.statusText);
 				error.response = response;
-				dispatch(loginFailure("No such a user"));
+				dispatch(loginFailure("用户不存在"));
 				throw error;
 			}
 		}

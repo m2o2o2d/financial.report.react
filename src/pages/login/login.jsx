@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { withRouter, Redirect } from 'react-router-dom';
 // import { is, fromJS } from 'immutable';
-import { login } from '@/store/login/action';
-import { Form, Icon, Input, Button, Checkbox } from 'antd';
+import { login, clearError } from '@/store/login/action';
+import { Form, Icon, Input, Button, Checkbox, Alert } from 'antd';
 import logo from '@/assets/images/logo.svg';
 import './login.less';
 
@@ -14,7 +14,10 @@ class Login extends Component {
 
 	static propTypes = {
 		isAuthenticated: PropTypes.bool.isRequired,
-		user: PropTypes.object
+		user: PropTypes.object,
+		error: PropTypes.string,
+		login: PropTypes.func.isRequired,
+		clearError: PropTypes.func.isRequired
 	};
 
 	handleSubmit = (e) => {
@@ -28,8 +31,12 @@ class Login extends Component {
 		});
 	};
 
+	handleMsgClose = () => {
+		this.props.clearError();
+	};
+
 	render() {
-		const { isAuthenticated } = this.props;
+		const { isAuthenticated, error } = this.props;
 		const { getFieldDecorator } = this.props.form;
 		return (
 			<div id="login">
@@ -38,6 +45,7 @@ class Login extends Component {
 					<img alt="GrapeCity" src={logo} />
     				<span>财务报表系统</span>
     			</div>
+    			{ error && error.length > 0 ? <Alert className="alert" message={error} type="error" closable afterClose={this.handleMsgClose}/> : null }
 				<Form onSubmit={this.handleSubmit} className="login-form">
 					<FormItem>
 						{getFieldDecorator('userName', {
@@ -72,11 +80,13 @@ class Login extends Component {
 
 const mapStateToProps = (state, ownProps) => ({
 	user: state.loginData.user || null,
-	isAuthenticated: state.loginData.isAuthenticated || false
+	isAuthenticated: state.loginData.isAuthenticated || false,
+	error: state.loginData.error || null
 });
 
 const mapDispatchToProps = {
-	login
+	login,
+	clearError
 };
 
 // export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Form.create()(Login)));
