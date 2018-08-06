@@ -1,5 +1,5 @@
 import API from '@/api/api';
-import { persistor } from '../store';
+// import { persistor } from '../store';
 
 export const LOGIN_LOADING = 'LOGIN_LOADING';
 export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
