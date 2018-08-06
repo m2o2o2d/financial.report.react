@@ -1,11 +1,11 @@
 import {createStore, combineReducers, applyMiddleware} from 'redux';
-// import * as home from './home/reducer';
-import * as login from './login/reducer';
+import { persistStore } from 'redux-persist';
 import thunk from 'redux-thunk';
+import * as login from './login/reducer';
 
-let store = createStore(
+export const store = createStore(
   combineReducers({...login}),
   applyMiddleware(thunk)
 );
 
-export default store;
+export const persistor = persistStore(store);

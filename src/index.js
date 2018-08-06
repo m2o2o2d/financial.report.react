@@ -1,12 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { PersistGate } from 'redux-persist/integration/react';
 import FastClick from 'fastclick';
 import { AppContainer } from 'react-hot-loader';
 import { Provider } from 'react-redux';
 import { HashRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
-// import AuthorizedRoute from '@/components/authorizedRoute/authorizedRoute';
 import registerServiceWorker from './registerServiceWorker';
-import store from '@/store/store';
+import { store, persistor } from '@/store/store';
 import asyncComponent from '@/utils/asyncComponent';
 import './style/base.css';
 
@@ -20,16 +20,18 @@ const render = Component => {
 	ReactDOM.render(
 		// Bind to redux, hot loader
 		<Provider store={store}>
-			<AppContainer>
-				<Router>
-					<Switch>
-						<Route path="/app" component={app} />
-						<Route path="/login" component={login} />
-						<Route path="/register" component={register} />
-						<Redirect to="/login" />
-					</Switch>
-				</Router>
-			</AppContainer>
+			<PersistGate loading={null} persistor={persistor}>
+				<AppContainer>
+					<Router>
+						<Switch>
+							<Route path="/app" component={app} />
+							<Route path="/login" component={login} />
+							<Route path="/register" component={register} />
+							<Redirect to="/login" />
+						</Switch>
+					</Router>
+				</AppContainer>
+			</PersistGate>
 		</Provider>,
 		document.getElementById('root')
 	);

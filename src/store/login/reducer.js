@@ -1,4 +1,12 @@
+import { persistReducer } from 'redux-persist';
+import localStorage from 'redux-persist/es/storage';
 import * as login from './action';
+
+const persistConfig = {
+	key: 'loginData',
+	storage: localStorage,
+	blacklist: ['error']
+};
 
 let initialState = {
 	user: null,
@@ -6,7 +14,7 @@ let initialState = {
 	error: null
 };
 
-export const loginData = (state = initialState, action = {}) => {
+const loginData = (state = initialState, action = {}) => {
 	switch(action.type) {
 		case login.LOGIN_LOADING:
 			return {...state, isLoading: action.isLoading};
@@ -22,3 +30,5 @@ export const loginData = (state = initialState, action = {}) => {
 			return state;
 	}
 };
+
+export default persistReducer(persistConfig, loginData);

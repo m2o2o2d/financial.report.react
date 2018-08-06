@@ -79,9 +79,9 @@ class Login extends Component {
 }
 
 const mapStateToProps = (state, ownProps) => ({
-	user: state.loginData.user || null,
-	isAuthenticated: state.loginData.isAuthenticated || false,
-	error: state.loginData.error || null
+	user: state.loginData && state.loginData.user || null,
+	isAuthenticated: state.loginData && state.loginData.isAuthenticated || false,
+	error: state.loginData && state.loginData.error || null
 });
 
 const mapDispatchToProps = {
