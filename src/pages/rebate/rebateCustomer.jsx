@@ -22,11 +22,11 @@ class RebateCustomer extends Component {
 		customerColumns: PropTypes.array.isRequired,
 	};
 
-	componentDidMount() {
-		this.props.initMonthData();
-		this.props.initYearData();
-		this.props.initCustomerData();
-	}
+	tableProperty = {
+		size: 'small',
+		pagination: false,
+		scroll: { y: 190 }
+	};
 
 	rebMonthRowSelection = {
 		onChange: (selectedRowKeys, selectedRows) => {
@@ -58,18 +58,24 @@ class RebateCustomer extends Component {
 		})
 	};
 
+	componentDidMount() {
+		this.props.initMonthData();
+		this.props.initYearData();
+		this.props.initCustomerData();
+	}
 
 	render() {
 		const { monthItems, monthColumns, yearItems, yearColumns, customerItems, customerColumns } = this.props;
+		const tableProperty = this.tableProperty;
 		return (
 			<Content className="mainContent">
-		      	<Table className="rebCus_table" rowSelection={this.rebMonthRowSelection} dataSource={monthItems} columns={monthColumns} size="small" pagination={false} scroll={{ y: 160 }}/>
-		      	<Table rowSelection={this.rebYearRowSelection} dataSource={yearItems} columns={yearColumns} size="small" pagination={false} scroll={{ y: 160 }}/>
+		      	<Table {...tableProperty} className="rebCus_table" rowSelection={this.rebMonthRowSelection} dataSource={monthItems} columns={monthColumns} />
+		      	<Table {...tableProperty} rowSelection={this.rebYearRowSelection} dataSource={yearItems} columns={yearColumns} />
 				<div className="toolbar">
 					<Button type="default">重置</Button>
 		      		<Button type="primary">更新</Button>
 		      	</div>
-		      	<Table className="rebCus_table" r rowSelection={this.rebCustomerRowSelection} dataSource={customerItems} columns={customerColumns} size="small" pagination={false} scroll={{ y: 160 }}/>
+		      	<Table {...tableProperty} className="rebCus_table" r rowSelection={this.rebCustomerRowSelection} dataSource={customerItems} columns={customerColumns} />
 			</Content>
 		);
 	}
