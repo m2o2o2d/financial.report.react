@@ -1,4 +1,5 @@
 import API from '@/api/api';
+import { persistor } from '../store';
 
 export const LOGIN_LOADING = 'LOGIN_LOADING';
 export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
@@ -28,6 +29,7 @@ const loginFailure = (error) => {
 };
 
 export const logout = () => {
+	// persistor.purge();
 	return {
 		type: LOGOUT
 	};

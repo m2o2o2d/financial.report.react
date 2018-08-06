@@ -50,8 +50,8 @@ class App extends Component {
 }
 
 const mapStateToProps = (state, ownProps) => ({
-	user: state.loginData.user || {UserID: '10001', UserName: 'm2o2o2d'},
-	isAuthenticated: state.loginData.isAuthenticated || false
+	user: state.default.user || {},
+	isAuthenticated: state.default.isAuthenticated || false
 });
 
 const mapDispatchToProps = {
