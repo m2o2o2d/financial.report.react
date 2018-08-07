@@ -11,11 +11,14 @@ class API {
 		return this.instance;
 	}
 
-	tableProperty = {
-		colWidthS: 80,
-		colWidthM: 150,
-		colWidthL: 200
-	}
+	rebateMonthData = [
+        {rebMonthRuleCode: "M-001", rebMonthRuleDesc: "2018年 一级经销商返利", rebBaseUnitPrice: 80, rebMinPriceGap: 10, rebValidYear: 2018, rebBonusLev1: 5},
+        {rebMonthRuleCode: "M-002", rebMonthRuleDesc: "2018年 二级经销商返利", rebBaseUnitPrice: 70, rebMinPriceGap: 20, rebValidYear: 2018, rebBonusLev1: 5, rebBonusLev2: 1},
+        {rebMonthRuleCode: "M-003", rebMonthRuleDesc: "2018年 二级经销商返利", rebBaseUnitPrice: 60, rebMinPriceGap: 30, rebValidYear: 2018, rebBonusLev1: 5, rebBonusLev2: 2, rebBonusLev3: 1},
+        {rebMonthRuleCode: "M-004", rebMonthRuleDesc: "2018年 二级经销商返利", rebBaseUnitPrice: 60, rebMinPriceGap: 30, rebValidYear: 2018, rebBonusLev1: 5, rebBonusLev2: 2, rebBonusLev3: 1},
+        {rebMonthRuleCode: "M-005", rebMonthRuleDesc: "2018年 二级经销商返利", rebBaseUnitPrice: 60, rebMinPriceGap: 30, rebValidYear: 2018, rebBonusLev1: 5, rebBonusLev2: 2, rebBonusLev3: 1},
+        {rebMonthRuleCode: "M-006", rebMonthRuleDesc: "2018年 二级经销商返利", rebBaseUnitPrice: 60, rebMinPriceGap: 30, rebValidYear: 2018, rebBonusLev1: 5, rebBonusLev2: 2, rebBonusLev3: 1},
+    ];
 
 	/* Get user data */
 	getUser(params = {}) {
@@ -24,12 +27,13 @@ class API {
 
 	/* Get month rebate table columns */
 	getRebateMonthCols() {
-		const colWidthS = 160;
-		const colWidthM = 260;
+		const colWidthS = '10%';
+		const colWidthM = '12%';
+		const colWidthL = '30%';
 		return [
-			{key: 'rebMonthRuleCode', title: '月度返利编码', dataIndex: 'rebMonthRuleCode', width: colWidthS, editable: false, sorter: (a, b) => sortString(a.rebMonthRuleCode, b.rebMonthRuleCode)}, 
-			{key: 'rebBaseUnitPrice', title: '基准单价(元)', dataIndex: 'rebBaseUnitPrice', width: colWidthS, editable: true, inputType: 'number', sorter: (a, b) => a.rebBaseUnitPrice - b.rebBaseUnitPrice}, 
-			{key: 'rebMinPriceGap', title: '最大价差(元)', dataIndex: 'rebMinPriceGap', width: colWidthS, editable: true, inputType: 'number', sorter: (a, b) => a.rebMinPriceGap - b.rebMinPriceGap}, 
+			{key: 'rebMonthRuleCode', title: '月度返利编码', dataIndex: 'rebMonthRuleCode', width: colWidthM, editable: false, sorter: (a, b) => sortString(a.rebMonthRuleCode, b.rebMonthRuleCode)}, 
+			{key: 'rebBaseUnitPrice', title: '基准单价(元)', dataIndex: 'rebBaseUnitPrice', width: colWidthM, editable: true, inputType: 'number', sorter: (a, b) => a.rebBaseUnitPrice - b.rebBaseUnitPrice}, 
+			{key: 'rebMinPriceGap', title: '最大价差(元)', dataIndex: 'rebMinPriceGap', width: colWidthM, editable: true, inputType: 'number', sorter: (a, b) => a.rebMinPriceGap - b.rebMinPriceGap}, 
 			{key: 'rebValidYear', title: '适用年度', dataIndex: 'rebValidYear', width: colWidthS, editable: true, inputType: 'number'}, 
 			{key: 'rebBonusLev1', title: '一级返利(元)', dataIndex: 'rebBonusLev1', width: colWidthS, editable: true, inputType: 'number'}, 
 			{key: 'rebBonusLev2', title: '二级返利(元)', dataIndex: 'rebBonusLev2', width: colWidthS, editable: true, inputType: 'number'}, 
@@ -40,14 +44,12 @@ class API {
 
 	/* Get month rebate data */
 	getRebateMonthData() {
-  		return [
-            {rebMonthRuleCode: "M-001", rebMonthRuleDesc: "2018年 一级经销商返利", rebBaseUnitPrice: 80, rebMinPriceGap: 10, rebValidYear: 2018, rebBonusLev1: 5},
-            {rebMonthRuleCode: "M-002", rebMonthRuleDesc: "2018年 二级经销商返利", rebBaseUnitPrice: 70, rebMinPriceGap: 20, rebValidYear: 2018, rebBonusLev1: 5, rebBonusLev2: 1},
-            {rebMonthRuleCode: "M-003", rebMonthRuleDesc: "2018年 二级经销商返利", rebBaseUnitPrice: 60, rebMinPriceGap: 30, rebValidYear: 2018, rebBonusLev1: 5, rebBonusLev2: 2, rebBonusLev3: 1},
-            {rebMonthRuleCode: "M-004", rebMonthRuleDesc: "2018年 二级经销商返利", rebBaseUnitPrice: 60, rebMinPriceGap: 30, rebValidYear: 2018, rebBonusLev1: 5, rebBonusLev2: 2, rebBonusLev3: 1},
-            {rebMonthRuleCode: "M-005", rebMonthRuleDesc: "2018年 二级经销商返利", rebBaseUnitPrice: 60, rebMinPriceGap: 30, rebValidYear: 2018, rebBonusLev1: 5, rebBonusLev2: 2, rebBonusLev3: 1},
-            {rebMonthRuleCode: "M-006", rebMonthRuleDesc: "2018年 二级经销商返利", rebBaseUnitPrice: 60, rebMinPriceGap: 30, rebValidYear: 2018, rebBonusLev1: 5, rebBonusLev2: 2, rebBonusLev3: 1},
-        ];
+  		return this.rebateMonthData;
+	}
+
+	/* Save month rebate data */
+	saveRebateMonthData(newItems) {
+		return this.rebateMonthData = [...this.rebateMonthData, ...newItems];
 	}
 
 	/* Get year rebate table columns */

@@ -1,6 +1,5 @@
 /**
  * EditableTable component
- * required props:
  * - dataSource: {array} dataSource of the table
  * - columns: {array} columns of the table
  * 		- key
@@ -9,6 +8,8 @@
  *		- title
  		- editable: false (default) | true
  * 	 !!! onCell would be overwrote
+ * - editingKeys: 
+ * - onRow(): listen to row change which can be used to get input data
  */
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
@@ -24,7 +25,11 @@ const EditableRow = ({ form, index, ...props }) => (
 	</EditableContext.Provider>
 );
 
-const EditableFormRow = Form.create()(EditableRow);
+const EditableFormRow = Form.create({
+	onFieldsChange(props, changedFields) {
+		props.onChange(changedFields);
+	}
+})(EditableRow);
 
 class EditableCell extends Component {
 
@@ -66,7 +71,12 @@ class EditableTable extends Component {
 	static propTypes = {
 		dataSource: PropTypes.array.isRequired,
 		columns: PropTypes.array.isRequired,
-		editingKeys: PropTypes.array
+		editingKeys: PropTypes.array,
+		save: PropTypes.func
+	};
+
+	state = {
+		newItems: {}
 	};
 
 	isEditing = (record) => {

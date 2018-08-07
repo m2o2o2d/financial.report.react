@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { initData, addItem } from '@/store/rebate/month/action';
+import { initData, save } from '@/store/rebate/month/action';
 import { Button, Collapse, Form, Input, InputNumber, Layout, Modal, Table } from 'antd';
 import EditableTable from '@/components/editableTable/editableTable';
 import './rebateMonth.less';
@@ -14,8 +14,11 @@ class RebateMonth extends Component {
 
 	static propTypes = {
 		items: PropTypes.array.isRequired,
-		columns: PropTypes.array.isRequired,
-		editingKeys: PropTypes.array
+		columns: PropTypes.array.isRequired
+	};
+
+	state = {
+		newItems: {} // rowKey:row
 	};
 
 	componentDidMount() {
@@ -23,11 +26,55 @@ class RebateMonth extends Component {
 	}
 
 	handleAdd = () => {
-		this.props.addItem(this.props.items, this.props.editingKeys);
+		const rebMonthRuleCode = "M-00" + (this.props.items.length + Object.keys(this.state.newItems).length + 1); //TODO
+		const newItem = {
+			rebMonthRuleCode: rebMonthRuleCode, 
+			rebMonthRuleDesc: "", 
+			rebBaseUnitPrice: 0, 
+			rebMinPriceGap: 0, 
+			rebValidYear: 0, 
+			rebBonusLev1: 0,
+			rebBonusLev2: 0,
+			rebBonusLev3: 0
+		};
+		this.setState({newItems:{...this.state.newItems, [rebMonthRuleCode]:newItem}});
+	};
+
+	handleSave = () => {
+		const data = Object.values(this.state.newItems);
+		this.setState({newItems: []});
+		this.props.save(data);
+	};
+
+	handleCancel = () => {
+		this.setState({newItems: []});
+	};
+
+	onRow = (record, index) => {
+		return {
+			onChange: (changedFields) => {
+				if(changedFields) {
+					const rowKeyValue = record['rebMonthRuleCode'];
+					let newRecord = this.state.newItems[rowKeyValue] || record;
+					const newItems = this.state.newItems; 
+					const entries = Object.entries(changedFields);
+					for(const entry of entries) {
+						if(entry[1].validating === false) {
+							newRecord = {...newRecord, [entry[0]]: entry[1].value};
+						}
+					}
+					this.setState({
+						newItems: {...newItems, [rowKeyValue]: newRecord}
+					});
+				}
+			}
+		};
 	};
 
 	render() {
-		const { items, columns, editingKeys } = this.props;
+		const { items, columns} = this.props;
+		const editingKeys = Object.keys(this.state.newItems);
+		const newItems = Object.values(this.state.newItems);
 		return (
 			<Content className="mainContent">
 				{/*----------------------------filter----------------------------*/}
@@ -59,28 +106,28 @@ class RebateMonth extends Component {
 		      	</Collapse>
 				{/*----------------------------toolbar----------------------------*/}
 				<div className="toolbar">
-		      		<Button type="default">导出</Button>
-		      		<Button type="default">打印</Button>
-		      		<Button type="default">保存</Button>
-		      		<Button type="default">删除</Button>
-		      		<Button type="default"onClick={this.handleAdd}>创建</Button>
+		      		{ newItems.length < 1 ? (<Button type="default">导出</Button>) : null}
+		      		{ newItems.length < 1 ? (<Button type="default">打印</Button>) : null}
+		      		{ newItems.length < 1 ? (<Button type="default">删除</Button>) : null}
+		      		{ newItems.length > 0 ? (<Button type="default" onClick={this.handleCancel}>取消</Button>) : null}
+		      		{ newItems.length > 0 ? (<Button type="default" onClick={this.handleSave}>保存</Button>) : null}
+		      		<Button type="default" onClick={this.handleAdd}>创建</Button>
 		      	</div>
 		      	{/*----------------------------table----------------------------*/}
-		      	<EditableTable rowKey="rebMonthRuleCode" dataSource={items} columns={columns} editingKeys={editingKeys} />
+		      	<EditableTable onRow={this.onRow} rowKey="rebMonthRuleCode" dataSource={[...items, ...newItems]} columns={columns} editingKeys={editingKeys} />
 			</Content>
 		);
 	}
 }
 
 const mapStateToProps = (state, ownProps) => ({
-	items: state.rebateMonth && state.rebateMonth.items || null,
-	columns: state.rebateMonth && state.rebateMonth.columns || null,
-	editingKeys: state.rebateMonth && state.rebateMonth.editingKeys || []
+	items: state.rebateMonth && state.rebateMonth.items || [],
+	columns: state.rebateMonth && state.rebateMonth.columns || []
 });
 
 const mapDispatchToProps = {
 	initData,
-	addItem
+	save
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Form.create()(RebateMonth));
