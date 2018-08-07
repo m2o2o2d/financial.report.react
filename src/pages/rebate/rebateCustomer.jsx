@@ -25,7 +25,7 @@ class RebateCustomer extends Component {
 	tableProperty = {
 		size: 'small',
 		pagination: false,
-		scroll: { y: 190 }
+		scroll: { y: 220 }
 	};
 
 	rebMonthRowSelection = {
@@ -33,7 +33,7 @@ class RebateCustomer extends Component {
     		console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
   		},
 		getCheckboxProps: record => ({
-		    disabled: record.name === 'Disabled User', // Column configuration not to be checked
+		    disabled: record.name === 'Disabled User',
 		    name: record.name,
 		})
 	};
@@ -43,7 +43,7 @@ class RebateCustomer extends Component {
     		console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
   		},
 		getCheckboxProps: record => ({
-		    disabled: record.name === 'Disabled User', // Column configuration not to be checked
+		    disabled: record.name === 'Disabled User',
 		    name: record.name,
 		})
 	};
@@ -53,7 +53,7 @@ class RebateCustomer extends Component {
     		console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
   		},
 		getCheckboxProps: record => ({
-		    disabled: record.name === 'Disabled User', // Column configuration not to be checked
+		    disabled: record.name === 'Disabled User',
 		    name: record.name,
 		})
 	};
@@ -68,14 +68,14 @@ class RebateCustomer extends Component {
 		const { monthItems, monthColumns, yearItems, yearColumns, customerItems, customerColumns } = this.props;
 		const tableProperty = this.tableProperty;
 		return (
-			<Content className="mainContent">
-		      	<Table {...tableProperty} className="rebCus_table" rowSelection={this.rebMonthRowSelection} dataSource={monthItems} columns={monthColumns} />
-		      	<Table {...tableProperty} rowSelection={this.rebYearRowSelection} dataSource={yearItems} columns={yearColumns} />
+			<Content className="mainContent" id="rebateCustomer">
+		      	<Table {...tableProperty} className="rebCus_table" rowKey="rebMonthRuleCode" rowSelection={this.rebMonthRowSelection} dataSource={monthItems} columns={monthColumns} />
+		      	<Table {...tableProperty} rowKey="rebYearRuleCode" rowSelection={this.rebYearRowSelection} dataSource={yearItems} columns={yearColumns} />
 				<div className="toolbar">
 					<Button type="default">重置</Button>
 		      		<Button type="primary">更新</Button>
 		      	</div>
-		      	<Table {...tableProperty} className="rebCus_table" r rowSelection={this.rebCustomerRowSelection} dataSource={customerItems} columns={customerColumns} />
+		      	<Table {...tableProperty} rowKey="customerCode" rowSelection={this.rebCustomerRowSelection} dataSource={customerItems} columns={customerColumns} />
 			</Content>
 		);
 	}

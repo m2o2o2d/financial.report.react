@@ -6,4 +6,4 @@ export const sortString = (s1, s2) => {
 	} else {
 		return s1 < s2 ? -1 : 1;
 	}
-}
+};

@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { initData } from '@/store/rebate/month/action';
+import { initData, addItem } from '@/store/rebate/month/action';
 import { Button, Collapse, Form, Input, InputNumber, Layout, Modal, Table } from 'antd';
+import EditableTable from '@/components/editableTable/editableTable';
 import './rebateMonth.less';
 
 const { Content } = Layout;
@@ -13,15 +14,20 @@ class RebateMonth extends Component {
 
 	static propTypes = {
 		items: PropTypes.array.isRequired,
-		columns: PropTypes.array.isRequired
+		columns: PropTypes.array.isRequired,
+		editingKeys: PropTypes.array
 	};
 
 	componentDidMount() {
 		this.props.initData();
 	}
 
+	handleAdd = () => {
+		this.props.addItem(this.props.items, this.props.editingKeys);
+	};
+
 	render() {
-		const { items, columns } = this.props;
+		const { items, columns, editingKeys } = this.props;
 		return (
 			<Content className="mainContent">
 				{/*----------------------------filter----------------------------*/}
@@ -53,13 +59,14 @@ class RebateMonth extends Component {
 		      	</Collapse>
 				{/*----------------------------toolbar----------------------------*/}
 				<div className="toolbar">
-		      		<Button type="default" shape="circle" icon="minus"></Button>
-		      		<Button type="default" shape="circle" icon="plus" onClick={this.handleCreate}></Button>
-		      		<Button type="default" shape="circle" icon="export"></Button>
-		      		<Button type="default" shape="circle" icon="printer"></Button>
+		      		<Button type="default">导出</Button>
+		      		<Button type="default">打印</Button>
+		      		<Button type="default">保存</Button>
+		      		<Button type="default">删除</Button>
+		      		<Button type="default"onClick={this.handleAdd}>创建</Button>
 		      	</div>
 		      	{/*----------------------------table----------------------------*/}
-		      	<Table dataSource={items} columns={columns} />
+		      	<EditableTable rowKey="rebMonthRuleCode" dataSource={items} columns={columns} editingKeys={editingKeys} />
 			</Content>
 		);
 	}
@@ -67,11 +74,13 @@ class RebateMonth extends Component {
 
 const mapStateToProps = (state, ownProps) => ({
 	items: state.rebateMonth && state.rebateMonth.items || null,
-	columns: state.rebateMonth && state.rebateMonth.columns || null
+	columns: state.rebateMonth && state.rebateMonth.columns || null,
+	editingKeys: state.rebateMonth && state.rebateMonth.editingKeys || []
 });
 
 const mapDispatchToProps = {
-	initData
+	initData,
+	addItem
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Form.create()(RebateMonth));
