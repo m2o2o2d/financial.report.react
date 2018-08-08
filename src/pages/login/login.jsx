@@ -26,7 +26,11 @@ class Login extends Component {
 			if(!err) {
 				const userName = values.userName;
 				const password = values.password;
-				this.props.login(userName, password);
+				this.props.login(userName, password).then(
+					res => {
+						console.log("a");
+					}
+				);
 			}
 		});
 	};

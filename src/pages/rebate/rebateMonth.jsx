@@ -2,13 +2,73 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { initData, save } from '@/store/rebate/month/action';
-import { Button, Collapse, Form, Input, InputNumber, Layout, Modal, Table } from 'antd';
+import { Button, Collapse, Form, Input, InputNumber, Layout } from 'antd';
 import EditableTable from '@/components/editableTable/editableTable';
 import './rebateMonth.less';
 
 const { Content } = Layout;
 const Panel = Collapse.Panel;
 const FormItem = Form.Item;
+
+class RebateMonthFilter extends Component {
+	
+	handleSearch = () => {
+		
+	};
+
+	handleReset = () => {
+		this.props.form.resetFields();
+	};
+
+	render() {
+		const { getFieldDecorator } = this.props.form;
+		return(
+			<Form layout="inline">	
+	      		<FormItem label="月度返利编码：">
+	      			{getFieldDecorator('rebMonthRuleCode', {
+	      				rules: [],
+	      			})(
+						<Input />
+	      			)}
+	      		</FormItem>
+	      		<FormItem label="返利规则描述：">
+	      			{getFieldDecorator('rebMonthRuleDesc', {
+	      				rules: [],
+	      			})(
+						<Input />
+	      			)}
+	      		</FormItem>
+	      		<FormItem label="基准单价(元)：">
+	      			{getFieldDecorator('rebBaseUnitPrice', {
+	      				rules: [],
+	      				initialValue: 10
+	      			})(
+						<InputNumber />
+	      			)}
+	      		</FormItem>
+	      		<FormItem label="最大价差(元)：">
+	      			{getFieldDecorator('rebMinPriceGap', {
+	      				rules: [],
+	      				initialValue: 10
+	      			})(
+						<InputNumber />
+					)}
+	      		</FormItem>
+	      		<FormItem label="适用年度：">
+	      			{getFieldDecorator('rebValidYear', {
+	      				rules: [],
+	      				initialValue: 2018
+	      			})(
+						<InputNumber />
+					)}
+	      		</FormItem>
+	      		<FormItem><Button type="primary" onClick={this.handleSearch}>查询</Button></FormItem>
+	      		<FormItem><Button type="default" onClick={this.handleReset}>重置</Button></FormItem>
+	      	</Form>
+		);
+	}
+}
+const RebateMonthFormFilter = Form.create()(RebateMonthFilter);
 
 class RebateMonth extends Component {
 
@@ -20,11 +80,48 @@ class RebateMonth extends Component {
 	state = {
 		newItems: {}, // rowKey:row
 		newForms: {}, // rowKey:form
+		filteredInfo: {
+			rebMonthRuleCode: "",
+			rebMonthRuleDesc: "",
+			rebBaseUnitPrice: 0,
+			rebMinPriceGap: 0,
+			rebValidYear: 2018
+		}
 	};
 
 	componentDidMount() {
 		this.props.initData();
 	}
+
+	decorateColumns = () => {
+		const columns = this.props.columns;
+		for(const col of columns) {
+			switch(col.dataIndex) {
+				case "rebMonthRuleCode":
+					col.filteredValue = this.state.rebMonthRuleCode;
+					col.onFilter = (value, record) => record.rebMonthRuleCode.includes(value);
+					break;
+				case "rebMonthRuleDesc":
+					col.filteredValue = this.state.rebMonthRuleDesc;
+					col.onFilter = (value, record) => record.rebMonthRuleDesc.includes(value);
+					break;
+				case "rebBaseUnitPrice":
+					col.filteredValue = this.state.rebBaseUnitPrice;
+					col.onFilter = (value, record) => record.rebBaseUnitPrice === value;
+					break;
+				case "rebMinPriceGap":
+					col.filteredValue = this.state.rebMinPriceGap;
+					col.onFilter = (value, record) => record.rebMinPriceGap === value;
+					break;
+				case "rebValidYear":
+					col.filteredValue = this.state.rebValidYear;
+					col.onFilter = (value, record) => record.rebValidYear === value;
+					break;
+				default:;
+			}
+		}
+		return columns;
+	};
 
 	check = () => {
 		const entries = Object.entries(this.state.newForms);
@@ -45,6 +142,10 @@ class RebateMonth extends Component {
 			hasError: hasError,
 			data: data
 		};
+	};
+
+	handleFilter = (e) => {
+		
 	};
 
 	handleAdd = () => {
@@ -92,7 +193,7 @@ class RebateMonth extends Component {
 	};
 
 	render() {
-		const { items, columns} = this.props;
+		const { items, columns } = this.props;
 		const editingKeys = Object.keys(this.state.newItems);
 		const newItems = Object.values(this.state.newItems);
 		return (
@@ -100,28 +201,7 @@ class RebateMonth extends Component {
 				{/*----------------------------filter----------------------------*/}
 				<Collapse defaultActiveKey="filter" bordered={true}>
 		      		<Panel key="filter" header="筛选条件">
-						<Form
-				      		layout="inline"
-							onSubmit={this.handleSearch}
-				      	>	
-				      		<FormItem label="月度返利编码：">
-				      			<Input />
-				      		</FormItem>
-				      		<FormItem label="返利规则描述：">
-				      			<Input />
-				      		</FormItem>
-				      		<FormItem label="基准单价(元)：">
-				      			<InputNumber defaultValue="10"/>
-				      		</FormItem>
-				      		<FormItem label="最大价差(元)：">
-				      			<InputNumber defaultValue="10"/>
-				      		</FormItem>
-				      		<FormItem label="适用年度：">
-				      			<InputNumber defaultValue="2018"/>
-				      		</FormItem>
-				      		<FormItem><Button type="primary" onClick={this.handleSearch}>查询</Button></FormItem>
-				      		<FormItem><Button type="default" onClick={this.handldeReset}>重置</Button></FormItem>
-				      	</Form>
+						<RebateMonthFormFilter />
 		      		</Panel>
 		      	</Collapse>
 				{/*----------------------------toolbar----------------------------*/}

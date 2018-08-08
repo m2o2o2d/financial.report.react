@@ -1,5 +1,4 @@
 import API from '@/api/api';
-// import { persistor } from '../store';
 
 export const LOGIN_LOADING = 'LOGIN_LOADING';
 export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
@@ -29,7 +28,6 @@ const loginFailure = (error) => {
 };
 
 export const logout = () => {
-	// persistor.purge();
 	return {
 		type: LOGOUT
 	};
@@ -42,10 +40,10 @@ export const clearError = () => {
 };
 
 export const login = (userID, password) => dispatch => {
-	API.getUser({userID: userID})
+	return API.getUser({userID: userID})
 	.then(
 		response => {
-			if(response.status >= 200 && response.status <300 && response.data !== "") {
+			if(response.status >= 200 && response.status < 300 && response.data !== "") {
 				dispatch(loginSuccess(response.data));
 			} else {
 				const error = new Error(response.statusText);

@@ -24,7 +24,6 @@ const EditableRow = ({ form, index, ...props }) => (
     	<tr {...props} />
 	</EditableContext.Provider>
 );
-
 const EditableFormRow = Form.create()(EditableRow);
 
 class EditableCell extends Component {
