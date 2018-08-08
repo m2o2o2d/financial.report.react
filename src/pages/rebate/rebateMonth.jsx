@@ -18,12 +18,34 @@ class RebateMonth extends Component {
 	};
 
 	state = {
-		newItems: {} // rowKey:row
+		newItems: {}, // rowKey:row
+		newForms: {}, // rowKey:form
 	};
 
 	componentDidMount() {
 		this.props.initData();
 	}
+
+	check = () => {
+		const entries = Object.entries(this.state.newForms);
+		const data = [];
+		let hasError = false;
+		for(const entry of entries) {
+			entry[1].validateFields((err) => {
+				if(!err) {
+					const fieldsValue = entry[1].getFieldsValue();
+					data.push({rebMonthRuleCode: entry[0], ...fieldsValue});
+				} else {
+					hasError = true;
+					console.log("err:", err);
+				}
+			});
+		}
+		return {
+			hasError: hasError,
+			data: data
+		};
+	};
 
 	handleAdd = () => {
 		const rebMonthRuleCode = "M-00" + (this.props.items.length + Object.keys(this.state.newItems).length + 1); //TODO
@@ -41,31 +63,29 @@ class RebateMonth extends Component {
 	};
 
 	handleSave = () => {
-		const data = Object.values(this.state.newItems);
-		this.setState({newItems: []});
-		this.props.save(data);
+		const { hasError, data } = this.check();
+		if(!hasError && data && data.length > 0) {
+			this.setState({newItems: [], newForms: []});
+			this.props.save(data);
+		}
 	};
 
 	handleCancel = () => {
-		this.setState({newItems: []});
+		this.setState({newItems: [], newForms: []});
 	};
 
 	onRow = (record, index) => {
 		return {
-			onChange: (changedFields) => {
-				if(changedFields) {
-					const rowKeyValue = record['rebMonthRuleCode'];
-					let newRecord = this.state.newItems[rowKeyValue] || record;
-					const newItems = this.state.newItems; 
-					const entries = Object.entries(changedFields);
-					for(const entry of entries) {
-						if(entry[1].validating === false) {
-							newRecord = {...newRecord, [entry[0]]: entry[1].value};
-						}
+			wrappedComponentRef: (instance) => {
+				// store the props.form of each row
+				if(instance) {
+					const { 'data-row-key': rowKeyValue, form } = instance.props;
+					const { newForms, newItems } = this.state;
+					if(!newForms[rowKeyValue] && newItems[rowKeyValue]) {
+						this.setState({
+							newForms: {...newForms, [rowKeyValue]: form}
+						});
 					}
-					this.setState({
-						newItems: {...newItems, [rowKeyValue]: newRecord}
-					});
 				}
 			}
 		};
@@ -108,10 +128,10 @@ class RebateMonth extends Component {
 				<div className="toolbar">
 		      		{ newItems.length < 1 ? (<Button type="default">导出</Button>) : null}
 		      		{ newItems.length < 1 ? (<Button type="default">打印</Button>) : null}
-		      		{ newItems.length < 1 ? (<Button type="default">删除</Button>) : null}
+		      		{ newItems.length < 1 ? (<Button type="danger">删除</Button>) : null}
 		      		{ newItems.length > 0 ? (<Button type="default" onClick={this.handleCancel}>取消</Button>) : null}
 		      		{ newItems.length > 0 ? (<Button type="default" onClick={this.handleSave}>保存</Button>) : null}
-		      		<Button type="default" onClick={this.handleAdd}>创建</Button>
+		      		<Button type="primary" onClick={this.handleAdd}>创建</Button>
 		      	</div>
 		      	{/*----------------------------table----------------------------*/}
 		      	<EditableTable onRow={this.onRow} rowKey="rebMonthRuleCode" dataSource={[...items, ...newItems]} columns={columns} editingKeys={editingKeys} />

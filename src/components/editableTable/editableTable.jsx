@@ -8,8 +8,8 @@
  *		- title
  		- editable: false (default) | true
  * 	 !!! onCell would be overwrote
- * - editingKeys: 
- * - onRow(): listen to row change which can be used to get input data
+ * - editingKeys: {array} row keys of editing rows
+ * - onRow(): listen to row change which can be used to get row form instance
  */
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
@@ -25,11 +25,7 @@ const EditableRow = ({ form, index, ...props }) => (
 	</EditableContext.Provider>
 );
 
-const EditableFormRow = Form.create({
-	onFieldsChange(props, changedFields) {
-		props.onChange(changedFields);
-	}
-})(EditableRow);
+const EditableFormRow = Form.create()(EditableRow);
 
 class EditableCell extends Component {
 
