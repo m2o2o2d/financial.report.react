@@ -26,8 +26,12 @@ const rebateMonthSaveSuccess = (data) => {
 	};
 };
 
-export const initData = () => dispatch => {
+export const getRebateMonthCols = () => dispatch => {
 	const columns = API.getRebateMonthCols();
+	return columns;
+}
+
+export const initData = (columns) => dispatch => {
 	const data = API.getRebateMonthData();
 	dispatch(rebateMonthInit(columns, data));
 };

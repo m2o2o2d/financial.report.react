@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { initData, save } from '@/store/rebate/month/action';
+import { initData, save, getRebateMonthCols } from '@/store/rebate/month/action';
 import { Button, Collapse, Form, Input, InputNumber, Layout } from 'antd';
 import EditableTable from '@/components/editableTable/editableTable';
 import './rebateMonth.less';
@@ -11,13 +11,24 @@ const Panel = Collapse.Panel;
 const FormItem = Form.Item;
 
 class RebateMonthFilter extends Component {
+
+	static propsTypes = {
+		search: PropTypes.func.isRequired,
+		reset: PropTypes.func.isRequired
+	};
 	
 	handleSearch = () => {
-		
+		this.props.form.validateFields((err) => {
+			if(!err) {
+				const fieldsValue = this.props.form.getFieldsValue();
+				this.props.search(fieldsValue);
+			}
+		});
 	};
 
 	handleReset = () => {
 		this.props.form.resetFields();
+		// this.props.reset();
 	};
 
 	render() {
@@ -90,11 +101,16 @@ class RebateMonth extends Component {
 	};
 
 	componentDidMount() {
-		this.props.initData();
+		this.initData();
 	}
-
-	decorateColumns = () => {
-		const columns = this.props.columns;
+	
+	initData = () => {
+		const columns = this.decorateColumns(this.props.getRebateMonthCols());
+		this.props.initData(columns);
+	};
+	
+	/* Set table column properties */
+	decorateColumns = (columns) => {
 		for(const col of columns) {
 			switch(col.dataIndex) {
 				case "rebMonthRuleCode":
@@ -122,7 +138,8 @@ class RebateMonth extends Component {
 		}
 		return columns;
 	};
-
+	
+	/* Check new items of table */
 	check = () => {
 		const entries = Object.entries(this.state.newForms);
 		const data = [];
@@ -143,11 +160,20 @@ class RebateMonth extends Component {
 			data: data
 		};
 	};
-
-	handleFilter = (e) => {
-		
+	
+	/* Search table */
+	handleFilter = (filteredInfo) => {
+		this.setState({
+			filteredInfo: {...this.state.filteredInfo, ...filteredInfo}
+		});
 	};
+	
+	/* Reset filter */
+	handleResetFilter = () => {
 
+	};
+	
+	/* Add a new item to table */
 	handleAdd = () => {
 		const rebMonthRuleCode = "M-00" + (this.props.items.length + Object.keys(this.state.newItems).length + 1); //TODO
 		const newItem = {
@@ -162,7 +188,8 @@ class RebateMonth extends Component {
 		};
 		this.setState({newItems:{...this.state.newItems, [rebMonthRuleCode]:newItem}});
 	};
-
+	
+	/* Save table */
 	handleSave = () => {
 		const { hasError, data } = this.check();
 		if(!hasError && data && data.length > 0) {
@@ -170,11 +197,13 @@ class RebateMonth extends Component {
 			this.props.save(data);
 		}
 	};
-
+	
+	/* Cancel editing table */
 	handleCancel = () => {
 		this.setState({newItems: [], newForms: []});
 	};
-
+	
+	/* Get row forms of table */
 	onRow = (record, index) => {
 		return {
 			wrappedComponentRef: (instance) => {
@@ -201,7 +230,7 @@ class RebateMonth extends Component {
 				{/*----------------------------filter----------------------------*/}
 				<Collapse defaultActiveKey="filter" bordered={true}>
 		      		<Panel key="filter" header="筛选条件">
-						<RebateMonthFormFilter />
+						<RebateMonthFormFilter search={this.handleFilter} reset={this.handleResetFilter}/>
 		      		</Panel>
 		      	</Collapse>
 				{/*----------------------------toolbar----------------------------*/}
@@ -226,6 +255,7 @@ const mapStateToProps = (state, ownProps) => ({
 });
 
 const mapDispatchToProps = {
+	getRebateMonthCols,
 	initData,
 	save
 };
