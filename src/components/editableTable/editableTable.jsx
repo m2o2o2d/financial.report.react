@@ -105,7 +105,6 @@ class EditableTable extends Component {
 			<Table
 				{...rest}
 				components={editComponents}
-				bordered
 				dataSource={dataSource}
 				columns={mappedCols}
 				rowClassName="editable-row"

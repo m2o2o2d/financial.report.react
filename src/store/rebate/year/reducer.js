@@ -9,6 +9,8 @@ const rebateYearData = (state = initialState, action = {}) => {
 	switch(action.type) {
 		case rebateYear.REBATE_YEAR_INIT:
 			return {...state, columns: action.columns, items: action.items};
+		case rebateYear.REBATE_YEAR_SAVE_SUCCESS:
+			return {...state, items: action.items};
 		default:
 			return state;
 	}
